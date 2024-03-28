@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wallpaper_app/config/routers/routes_name.dart';
+import 'package:wallpaper_app/core/routers/routes_name.dart';
 
 class PageNotFound extends StatelessWidget {
   const PageNotFound({super.key});

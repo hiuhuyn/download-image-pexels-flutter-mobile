@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
-import 'package:wallpaper_app/config/routers/custome_route.dart';
+import 'package:wallpaper_app/core/routers/generate_route_app.dart';
+import 'package:wallpaper_app/setup.dart';
 
 void main() {
+  initlizeDependencies();
   runApp(const MyApp());
 }
 
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       initialRoute: "/",
-      onGenerateRoute: CustomeRoute.generate,
+      onGenerateRoute: GenerateRouteApp.generate,
     );
   }
 }
