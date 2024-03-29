@@ -1,0 +1,1 @@
+enum TypeFile { video, image }

@@ -1,11 +1,12 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:http/http.dart';
+import 'package:flutter/foundation.dart';
 import 'package:wallpaper_app/app/data/data_sources/remote/api_pexels.dart';
 import 'package:wallpaper_app/app/data/models/page.dart';
 import 'package:wallpaper_app/app/data/models/photo.dart';
 import 'package:wallpaper_app/app/data/models/video.dart';
+import 'package:wallpaper_app/app/domain/entity/category_entity.dart';
 import 'package:wallpaper_app/app/domain/entity/page_entity.dart';
 import 'package:wallpaper_app/app/domain/entity/photo_entity.dart';
 import 'package:wallpaper_app/app/domain/entity/video_entity.dart';
@@ -120,5 +121,29 @@ class RepositoryRemoteImpl implements RepositoryRemote {
     } on DioException catch (e) {
       return DataFailed(e);
     }
+  }
+
+  @override
+  Future<DataState<List<CategoryEntity>>> getPhotosCategory(
+      List<CategoryEntity> titles) async {
+    List<CategoryEntity> categories = [];
+    for (var element in titles) {
+      try {
+        final response = await api!.getSearchPhotos(element.title, 1, 1);
+        if (response.statusCode == HttpStatus.ok) {
+          Page page = Page.fromJson(response.data);
+          String? urlImg = page.photos!.first.src?.original;
+          if (urlImg != null) {
+            categories.add(CategoryEntity(
+                title: element.title, src: urlImg, type: element.type));
+          }
+        }
+      } catch (e) {
+        if (kDebugMode) {
+          print("Lỗi getPhotosCategory: $e");
+        }
+      }
+    }
+    return DataSuccess<List<CategoryEntity>>(categories);
   }
 }

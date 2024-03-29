@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:wallpaper_app/core/routers/routes_name.dart';
 
@@ -6,7 +7,9 @@ class PageNotFound extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("Page not found init");
+    if (kDebugMode) {
+      print("Page not found init");
+    }
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,

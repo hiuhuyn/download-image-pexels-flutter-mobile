@@ -23,8 +23,8 @@ class Page extends PageEntity {
         prevPage: entity.prevPage);
   }
   factory Page.fromJson(Map<String, dynamic> json) {
-    List<Photo> photos = List.empty();
-    List<Video> videos = List.empty();
+    List<Photo> photos = [];
+    List<Video> videos = [];
     if (json['photos'] != null) {
       json['photos'].forEach((photo) {
         photos.add(Photo.fromJson(photo));

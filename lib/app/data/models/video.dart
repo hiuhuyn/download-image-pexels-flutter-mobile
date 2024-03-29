@@ -22,9 +22,11 @@ class Video extends VideoEntity {
       image: json['image'],
       duration: json['duration'],
       user: json['user'] != null ? User.fromJson(json['user']) : null,
+      // ignore: prefer_null_aware_operators
       videoFiles: json['video_files'] != null
           ? json['video_files'].map((e) => VideoFiles.fromJson(e)).toList()
           : null,
+      // ignore: prefer_null_aware_operators
       videoPictures: json['video_pictures'] != null
           ? json['video_pictures']
               .map((e) => VideoPictures.fromJson(e))
@@ -126,7 +128,7 @@ class VideoPictures extends VideoPicturesEntity {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['picture'] = picture;
     data['nr'] = nr;
