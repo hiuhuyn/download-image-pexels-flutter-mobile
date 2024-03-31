@@ -1,16 +1,15 @@
-class VideoEntity {
-  int? id;
-  int? width;
-  int? height;
+import 'package:wallpaper_app/app/domain/entity/media.dart';
+
+class VideoEntity extends Media {
   String? image;
   int? duration;
   List<VideoFilesEntity>? videoFiles;
   List<VideoPicturesEntity>? videoPictures;
 
   VideoEntity(
-      {this.id,
-      this.width,
-      this.height,
+      {id,
+      width,
+      height,
       this.image,
       this.duration,
       this.videoFiles,

@@ -1,13 +1,12 @@
-class PhotoEntity {
-  int? id;
-  int? width;
-  int? height;
+import 'package:wallpaper_app/app/domain/entity/media.dart';
+
+class PhotoEntity extends Media {
   String? src;
 
   PhotoEntity({
-    this.id,
-    this.width,
-    this.height,
+    id,
+    width,
+    height,
     this.src,
   });
   @override

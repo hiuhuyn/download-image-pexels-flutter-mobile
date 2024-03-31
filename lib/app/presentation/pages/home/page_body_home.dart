@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:wallpaper_app/app/domain/entity/category_entity.dart';
+import 'package:wallpaper_app/app/domain/entity/media.dart';
 import 'package:wallpaper_app/app/domain/entity/photo_entity.dart';
 import 'package:wallpaper_app/app/domain/entity/video_entity.dart';
 import 'package:wallpaper_app/app/domain/usecases/remote/photo/get_search_photos_usecase.dart';
@@ -22,8 +23,7 @@ class PageBodyHome extends StatefulWidget {
 class _PageBodyHomeState extends State<PageBodyHome>
     with AutomaticKeepAliveClientMixin {
   final scrollController = ScrollController();
-  List<PhotoEntity> photos = [];
-  List<VideoEntity> videos = [];
+  List<Media> medias = [];
   int page = 0;
   final perPage = 10;
   bool isLoading = false;
@@ -37,7 +37,7 @@ class _PageBodyHomeState extends State<PageBodyHome>
           .call(query: widget.category.title, page: page++, perPage: perPage);
       if (request is DataSuccess) {
         setState(() {
-          photos.addAll(request.data!.photos!);
+          medias.addAll(request.data!.medias!);
         });
         page++;
       } else {
@@ -95,21 +95,22 @@ class _PageBodyHomeState extends State<PageBodyHome>
             controller: scrollController,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2, childAspectRatio: 0.5),
-            itemCount: widget.category.type == TypeFile.image
-                ? photos.length
-                : videos.length,
+            itemCount: medias.length,
             itemBuilder: (context, index) {
-              if (widget.category.type == TypeFile.image) {
+              final item = medias[index];
+              if (item is PhotoEntity) {
                 return Ink(
                     child: ImageNetworkCustom(
-                  url: photos[index].src!,
+                  url: item.src!,
                   onTap: () {},
                 ));
-              } else {
+              }
+              if (item is VideoEntity) {
                 return Ink(
                   child: const Text("Video"),
                 );
               }
+              return const Spacer();
             },
           ),
         ),
