@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wallpaper_app/app/domain/usecases/local/get_categorys_local_usecase.dart';
 import 'package:wallpaper_app/app/presentation/pages/home/bloc/home_bloc.dart';
 import 'package:wallpaper_app/app/presentation/pages/home/bloc/home_state.dart';
-import 'package:wallpaper_app/app/presentation/pages/home/page_contents_home.dart';
+import 'package:wallpaper_app/app/presentation/pages/home/page_body_home.dart';
 import 'package:wallpaper_app/app/presentation/widgets/failed_widget.dart';
 import 'package:wallpaper_app/app/presentation/widgets/loading_widget.dart';
 import 'package:wallpaper_app/core/state/data_state.dart';
@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
           return PageView.builder(
             itemCount: state.categories?.length,
             itemBuilder: (context, index) {
-              return PageContentsHome(category: state.categories![index]);
+              return PageBodyHome(category: state.categories![index]);
             },
           );
         },

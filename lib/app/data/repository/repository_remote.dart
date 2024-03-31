@@ -132,7 +132,7 @@ class RepositoryRemoteImpl implements RepositoryRemote {
         final response = await api!.getSearchPhotos(element.title, 1, 1);
         if (response.statusCode == HttpStatus.ok) {
           Page page = Page.fromJson(response.data);
-          String? urlImg = page.photos!.first.src?.original;
+          String? urlImg = page.photos!.first.src;
           if (urlImg != null) {
             categories.add(CategoryEntity(
                 title: element.title, src: urlImg, type: element.type));

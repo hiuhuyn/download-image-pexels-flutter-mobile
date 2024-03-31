@@ -1,13 +1,9 @@
-import 'package:wallpaper_app/app/domain/entity/user_entity.dart';
-
 class VideoEntity {
   int? id;
   int? width;
   int? height;
-  String? url;
   String? image;
   int? duration;
-  UserEntity? user;
   List<VideoFilesEntity>? videoFiles;
   List<VideoPicturesEntity>? videoPictures;
 
@@ -15,10 +11,8 @@ class VideoEntity {
       {this.id,
       this.width,
       this.height,
-      this.url,
       this.image,
       this.duration,
-      this.user,
       this.videoFiles,
       this.videoPictures});
 }

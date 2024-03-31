@@ -11,15 +11,15 @@ import 'package:wallpaper_app/core/enum/type_file.dart';
 import 'package:wallpaper_app/core/state/data_state.dart';
 import 'package:wallpaper_app/setup.dart';
 
-class PageContentsHome extends StatefulWidget {
+class PageBodyHome extends StatefulWidget {
   CategoryEntity category;
-  PageContentsHome({super.key, required this.category});
+  PageBodyHome({super.key, required this.category});
 
   @override
-  State<PageContentsHome> createState() => _PageContentsHomeState();
+  State<PageBodyHome> createState() => _PageBodyHomeState();
 }
 
-class _PageContentsHomeState extends State<PageContentsHome>
+class _PageBodyHomeState extends State<PageBodyHome>
     with AutomaticKeepAliveClientMixin {
   final scrollController = ScrollController();
   List<PhotoEntity> photos = [];
@@ -44,7 +44,7 @@ class _PageContentsHomeState extends State<PageContentsHome>
         //
       }
     } else {
-      //
+      // load videos
     }
   }
 
@@ -57,10 +57,6 @@ class _PageContentsHomeState extends State<PageContentsHome>
           (scrollController.position.maxScrollExtent)) {
         loadMore();
       }
-      // if (scrollController.position.pixels ==
-      //     scrollController.position.minScrollExtent) {
-      //   print("load đầu");
-      // }
       if (scrollController.position.pixels >= 200 && heightCategory >= 200) {
         setState(() {
           widthCategory = widthCategory * 0.5;
@@ -105,8 +101,10 @@ class _PageContentsHomeState extends State<PageContentsHome>
             itemBuilder: (context, index) {
               if (widget.category.type == TypeFile.image) {
                 return Ink(
-                  child: ImageNetworkCustom(url: photos[index].src!.original!),
-                );
+                    child: ImageNetworkCustom(
+                  url: photos[index].src!,
+                  onTap: () {},
+                ));
               } else {
                 return Ink(
                   child: const Text("Video"),

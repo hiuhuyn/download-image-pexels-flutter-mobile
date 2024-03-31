@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wallpaper_app/app/presentation/pages/home/home_page.dart';
-import 'package:wallpaper_app/app/presentation/pages/page_not_found.dart';
+import 'package:wallpaper_app/app/presentation/pages/page_error/page_not_found.dart';
 import 'package:wallpaper_app/core/routers/routes_name.dart';
 
 class GenerateRouteApp {

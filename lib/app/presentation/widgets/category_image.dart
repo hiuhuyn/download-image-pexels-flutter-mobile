@@ -8,8 +8,9 @@ class CategoryAndImage extends StatefulWidget {
   CategoryEntity category;
   double? width;
   double? height;
+  void Function()? onTap;
   CategoryAndImage(
-      {super.key, required this.category, this.width, this.height});
+      {super.key, required this.category, this.width, this.height, this.onTap});
 
   @override
   State<CategoryAndImage> createState() => _CategoryAndImageState();
@@ -20,46 +21,49 @@ class _CategoryAndImageState extends State<CategoryAndImage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return CachedNetworkImage(
-      width: widget.width,
-      height: widget.height,
-      imageUrl:
-          "${widget.category.src!}?auto=compress&cs=tinysrgb&w=350&lazy=load",
-      imageBuilder: (context, imageProvider) {
-        return Container(
-            margin: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                image:
-                    DecorationImage(image: imageProvider, fit: BoxFit.cover)),
-            alignment: Alignment.bottomCenter,
-            child: Text(
-              widget.category.title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  fontSize: 18),
-            ));
-      },
-      placeholder: (context, url) {
-        return Container(
-            margin: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: const Color.fromARGB(144, 93, 93, 93)),
-            alignment: Alignment.bottomCenter,
-            child: Text(
-              widget.category.title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  fontSize: 18),
-            ));
-      },
+    return InkWell(
+      onTap: widget.onTap,
+      child: CachedNetworkImage(
+        width: widget.width,
+        height: widget.height,
+        imageUrl:
+            "${widget.category.src!}?auto=compress&cs=tinysrgb&w=700&lazy=load",
+        imageBuilder: (context, imageProvider) {
+          return Container(
+              margin: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  image:
+                      DecorationImage(image: imageProvider, fit: BoxFit.cover)),
+              alignment: Alignment.bottomCenter,
+              child: Text(
+                widget.category.title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 18),
+              ));
+        },
+        placeholder: (context, url) {
+          return Container(
+              margin: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: const Color.fromARGB(144, 93, 93, 93)),
+              alignment: Alignment.bottomCenter,
+              child: Text(
+                widget.category.title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 18),
+              ));
+        },
+      ),
     );
   }
 

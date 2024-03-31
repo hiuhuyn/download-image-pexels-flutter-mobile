@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 
 class ImageNetworkCustom extends StatefulWidget {
   String url;
-  ImageNetworkCustom({super.key, required this.url});
+  void Function()? onTap;
+  ImageNetworkCustom({super.key, required this.url, this.onTap});
 
   @override
   State<ImageNetworkCustom> createState() => _ImageNetworkCustomState();
@@ -20,22 +21,25 @@ class _ImageNetworkCustomState extends State<ImageNetworkCustom>
     //   color: Color.fromARGB(Random().nextInt(255), Random().nextInt(255),
     //       Random().nextInt(255), Random().nextInt(255)),
     // );
-    return CachedNetworkImage(
-      imageUrl: "${widget.url}?auto=compress&cs=tinysrgb&w=600&lazy=load",
-      imageBuilder: (context, imageProvider) => Container(
-        margin: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          image: DecorationImage(
-            image: imageProvider,
-            fit: BoxFit.fitHeight,
+    return InkWell(
+      onTap: widget.onTap,
+      child: CachedNetworkImage(
+        imageUrl: "${widget.url}?auto=compress&cs=tinysrgb&w=700&lazy=load",
+        imageBuilder: (context, imageProvider) => Container(
+          margin: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            image: DecorationImage(
+              image: imageProvider,
+              fit: BoxFit.fitHeight,
+            ),
           ),
         ),
+        placeholder: (context, url) =>
+            const Center(child: CircularProgressIndicator()),
+        errorWidget: (context, url, error) =>
+            const Center(child: Icon(Icons.error)),
       ),
-      placeholder: (context, url) =>
-          const Center(child: CircularProgressIndicator()),
-      errorWidget: (context, url, error) =>
-          const Center(child: Icon(Icons.error)),
     );
   }
 

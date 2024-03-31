@@ -1,4 +1,3 @@
-import 'package:wallpaper_app/app/data/models/user.dart';
 import 'package:wallpaper_app/app/domain/entity/video_entity.dart';
 
 class Video extends VideoEntity {
@@ -6,10 +5,8 @@ class Video extends VideoEntity {
       {super.id,
       super.width,
       super.height,
-      super.url,
       super.image,
       super.duration,
-      super.user,
       super.videoFiles,
       super.videoPictures});
 
@@ -18,10 +15,9 @@ class Video extends VideoEntity {
       id: json['id'],
       width: json['width'],
       height: json['height'],
-      url: json['url'],
+
       image: json['image'],
       duration: json['duration'],
-      user: json['user'] != null ? User.fromJson(json['user']) : null,
       // ignore: prefer_null_aware_operators
       videoFiles: json['video_files'] != null
           ? json['video_files'].map((e) => VideoFiles.fromJson(e)).toList()
@@ -40,12 +36,10 @@ class Video extends VideoEntity {
     data['id'] = id;
     data['width'] = width;
     data['height'] = height;
-    data['url'] = url;
+
     data['image'] = image;
     data['duration'] = duration;
-    if (user != null) {
-      data['user'] = User.fromEntity(user!).toJson();
-    }
+
     if (videoFiles != null) {
       data['video_files'] =
           videoFiles!.map((v) => VideoFiles.fromEntity(v).toJson()).toList();
