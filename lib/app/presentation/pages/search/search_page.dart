@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:wallpaper_app/core/routers/routes_name.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -9,45 +10,67 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  final TextEditingController _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SizedBox(
-        width: MediaQuery.of(context).size.width,
+      body: SafeArea(
         child: Column(
           children: [
-            const SizedBox(height: 40),
-            Row(
-              children: [
-                IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.arrow_back_ios,
-                      color: Colors.black,
-                    )),
-                Expanded(
-                  child: SearchBar(
-                    backgroundColor:
-                        const MaterialStatePropertyAll(Colors.black),
-                    textStyle: const MaterialStatePropertyAll(
-                        TextStyle(color: Colors.white, fontSize: 15)),
-                    overlayColor: const MaterialStatePropertyAll(Colors.red),
-                    controller: _searchController,
-                    hintText: "Search",
-                    elevation: const MaterialStatePropertyAll(1),
-                    padding: const MaterialStatePropertyAll(
-                        EdgeInsets.symmetric(vertical: 0, horizontal: 8)),
-                  ),
-                ),
-                const SizedBox(
-                  width: 20,
-                )
-              ],
-            ),
+            _appbar(),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _collection() {
+    return Column();
+  }
+
+  Widget _collectionTrending() {
+    return Column();
+  }
+
+  Widget _appbar() {
+    return Row(
+      children: [
+        IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+            )),
+        Expanded(
+            child: InkWell(
+          onTap: () {
+            Navigator.of(context).pushNamed(RoutesName.kSearchInput);
+          },
+          child: Container(
+            height: 40,
+            decoration: BoxDecoration(
+              color: Colors.yellow,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Search",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold),
+                ),
+                Icon(Icons.search)
+              ],
+            ),
+          ),
+        )),
+      ],
     );
   }
 }

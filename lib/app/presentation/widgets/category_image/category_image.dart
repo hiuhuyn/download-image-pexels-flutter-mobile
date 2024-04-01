@@ -4,19 +4,35 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:wallpaper_app/app/domain/entity/category_entity.dart';
 
-class CategoryAndImage extends StatefulWidget {
+class CategoryImage extends StatefulWidget {
   CategoryEntity category;
   double? width;
   double? height;
+  int widthImagePixel;
   void Function()? onTap;
-  CategoryAndImage(
-      {super.key, required this.category, this.width, this.height, this.onTap});
+  BorderRadius? borderRadius;
+  Alignment? alignment;
+  double? textFontSize;
+  EdgeInsets? margin;
+  BoxBorder? border;
+  CategoryImage(
+      {super.key,
+      required this.category,
+      this.width,
+      this.height,
+      this.textFontSize,
+      this.onTap,
+      this.borderRadius,
+      this.border,
+      this.widthImagePixel = 700,
+      this.alignment = Alignment.bottomCenter,
+      this.margin});
 
   @override
-  State<CategoryAndImage> createState() => _CategoryAndImageState();
+  State<CategoryImage> createState() => _CategoryImageState();
 }
 
-class _CategoryAndImageState extends State<CategoryAndImage>
+class _CategoryImageState extends State<CategoryImage>
     with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
@@ -27,40 +43,41 @@ class _CategoryAndImageState extends State<CategoryAndImage>
         width: widget.width,
         height: widget.height,
         imageUrl:
-            "${widget.category.src!}?auto=compress&cs=tinysrgb&w=700&lazy=load",
+            "${widget.category.src!}?auto=compress&cs=tinysrgb&w=${widget.widthImagePixel}&lazy=load",
         imageBuilder: (context, imageProvider) {
           return Container(
-              margin: const EdgeInsets.all(8),
+              margin: widget.margin,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: widget.borderRadius,
+                  border: widget.border,
                   image:
                       DecorationImage(image: imageProvider, fit: BoxFit.cover)),
-              alignment: Alignment.bottomCenter,
+              alignment: widget.alignment,
               child: Text(
                 widget.category.title,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
+                style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
-                    fontSize: 18),
+                    fontSize: widget.textFontSize),
               ));
         },
         placeholder: (context, url) {
           return Container(
-              margin: const EdgeInsets.all(8),
+              margin: widget.margin,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: widget.borderRadius,
+                  border: widget.border,
                   color: const Color.fromARGB(144, 93, 93, 93)),
-              alignment: Alignment.bottomCenter,
+              alignment: widget.alignment,
               child: Text(
                 widget.category.title,
-                maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
+                style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
-                    fontSize: 18),
+                    fontSize: widget.textFontSize),
               ));
         },
       ),

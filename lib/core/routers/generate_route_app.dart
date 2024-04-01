@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:wallpaper_app/app/domain/entity/media.dart';
 import 'package:wallpaper_app/app/presentation/pages/home/home_page.dart';
 import 'package:wallpaper_app/app/presentation/pages/error/page_not_found.dart';
+import 'package:wallpaper_app/app/presentation/pages/list_wallpaper_title/list_wallpaper_title_page.dart';
+import 'package:wallpaper_app/app/presentation/pages/search/search_input_page.dart';
 import 'package:wallpaper_app/app/presentation/pages/search/search_page.dart';
 import 'package:wallpaper_app/app/presentation/pages/show_wallpaper/component/fullscreen_wallpaper_page.dart';
 import 'package:wallpaper_app/app/presentation/pages/show_wallpaper/show_wallpapers_page.dart';
@@ -51,6 +53,16 @@ class GenerateRouteApp {
       case RoutesName.kSearch:
         return MaterialPageRoute(
             builder: (context) => const SearchPage(), settings: settings);
+      case RoutesName.kSearchInput:
+        return MaterialPageRoute(
+            builder: (context) => SearchInputPage(), settings: settings);
+      case RoutesName.kListWallpaperTitle:
+        String title = "";
+        return MaterialPageRoute(
+            builder: (context) => ListWallpaperTitltePage(
+                  title: title,
+                ),
+            settings: settings);
       default:
         return MaterialPageRoute(
             builder: (context) => const PageNotFound(), settings: settings);
