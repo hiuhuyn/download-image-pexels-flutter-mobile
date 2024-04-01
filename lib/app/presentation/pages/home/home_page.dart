@@ -5,9 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wallpaper_app/app/domain/usecases/local/get_categorys_local_usecase.dart';
 import 'package:wallpaper_app/app/presentation/pages/home/bloc/home_bloc.dart';
 import 'package:wallpaper_app/app/presentation/pages/home/bloc/home_state.dart';
-import 'package:wallpaper_app/app/presentation/pages/home/page_body_home.dart';
+import 'package:wallpaper_app/app/presentation/pages/home/component/page_body_home.dart';
 import 'package:wallpaper_app/app/presentation/widgets/failed_widget.dart';
 import 'package:wallpaper_app/app/presentation/widgets/loading_widget.dart';
+import 'package:wallpaper_app/core/routers/routes_name.dart';
 import 'package:wallpaper_app/core/state/data_state.dart';
 import 'package:wallpaper_app/setup.dart';
 
@@ -49,6 +50,16 @@ class _HomePageState extends State<HomePage> {
             },
           );
         },
+      ),
+      floatingActionButton: ElevatedButton.icon(
+        style: const ButtonStyle(
+          foregroundColor: MaterialStatePropertyAll(Colors.black),
+        ),
+        onPressed: () {
+          Navigator.pushNamed(context, RoutesName.kSearch);
+        },
+        icon: const Icon(Icons.search),
+        label: const Text("Search"),
       ),
       drawer: const Drawer(),
     );

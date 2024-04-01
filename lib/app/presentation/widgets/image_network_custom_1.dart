@@ -24,7 +24,7 @@ class _ImageNetworkCustomState extends State<ImageNetworkCustom>
     return InkWell(
       onTap: widget.onTap,
       child: CachedNetworkImage(
-        imageUrl: "${widget.url}?auto=compress&cs=tinysrgb&w=700&lazy=load",
+        imageUrl: widget.url,
         imageBuilder: (context, imageProvider) => Container(
           margin: const EdgeInsets.all(8),
           decoration: BoxDecoration(

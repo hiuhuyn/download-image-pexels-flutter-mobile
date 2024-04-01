@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:wallpaper_app/app/data/models/photo.dart';
 import 'package:wallpaper_app/app/domain/entity/category_entity.dart';
 import 'package:wallpaper_app/app/domain/entity/media.dart';
 import 'package:wallpaper_app/app/domain/entity/photo_entity.dart';
@@ -9,6 +10,7 @@ import 'package:wallpaper_app/app/domain/usecases/remote/photo/get_search_photos
 import 'package:wallpaper_app/app/presentation/widgets/category_image.dart';
 import 'package:wallpaper_app/app/presentation/widgets/image_network_custom_1.dart';
 import 'package:wallpaper_app/core/enum/type_file.dart';
+import 'package:wallpaper_app/core/routers/routes_name.dart';
 import 'package:wallpaper_app/core/state/data_state.dart';
 import 'package:wallpaper_app/setup.dart';
 
@@ -31,7 +33,7 @@ class _PageBodyHomeState extends State<PageBodyHome>
   double heightCategory = 200;
   double widthCategory = 400;
 
-  void loadMore() async {
+  Future loadMore() async {
     if (widget.category.type == TypeFile.image) {
       final request = await sl<GetSearchPhotosUsecase>()
           .call(query: widget.category.title, page: page++, perPage: perPage);
@@ -81,7 +83,7 @@ class _PageBodyHomeState extends State<PageBodyHome>
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 1000),
           height: heightCategory,
           width: widthCategory,
           child: CategoryAndImage(
@@ -99,16 +101,10 @@ class _PageBodyHomeState extends State<PageBodyHome>
             itemBuilder: (context, index) {
               final item = medias[index];
               if (item is PhotoEntity) {
-                return Ink(
-                    child: ImageNetworkCustom(
-                  url: item.src!,
-                  onTap: () {},
-                ));
+                return _itemImage(item, index);
               }
               if (item is VideoEntity) {
-                return Ink(
-                  child: const Text("Video"),
-                );
+                return _itemVideo(item, index);
               }
               return const Spacer();
             },
@@ -120,4 +116,29 @@ class _PageBodyHomeState extends State<PageBodyHome>
 
   @override
   bool get wantKeepAlive => true;
+  Widget _itemImage(PhotoEntity photo, int index) {
+    return Ink(
+        child: ImageNetworkCustom(
+      url: Photo.fromEntity(photo).srcLazy()!,
+      onTap: () {
+        List<Media> items = medias.sublist(index);
+        if (items.length < 15) {
+          loadMore().then((value) {
+            items = medias.sublist(index);
+            Navigator.pushNamed(context, RoutesName.kListWallpaperSelect,
+                arguments: items);
+          });
+        } else {
+          Navigator.pushNamed(context, RoutesName.kListWallpaperSelect,
+              arguments: items);
+        }
+      },
+    ));
+  }
+
+  Widget _itemVideo(VideoEntity vieo, int index) {
+    return Ink(
+      child: const Text("Video"),
+    );
+  }
 }

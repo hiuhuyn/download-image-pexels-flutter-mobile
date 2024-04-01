@@ -9,6 +9,7 @@ class PhotoEntity extends Media {
     height,
     this.src,
   });
+
   @override
   String toString() {
     return 'PhotoEntity{id: $id, width: $width, height: $height, src: $src}';

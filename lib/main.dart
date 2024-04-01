@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wallpaper_app/app/presentation/pages/home/bloc/home_bloc.dart';
 import 'package:wallpaper_app/core/routers/generate_route_app.dart';
+import 'package:wallpaper_app/core/routers/routes_name.dart';
 import 'package:wallpaper_app/setup.dart';
 
 void main() async {
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          initialRoute: "/",
+          initialRoute: RoutesName.kHomePage,
           onGenerateRoute: GenerateRouteApp.generate,
         ));
   }
