@@ -6,7 +6,11 @@ import 'package:flutter/material.dart';
 class ImageNetworkCustom extends StatefulWidget {
   String url;
   void Function()? onTap;
-  ImageNetworkCustom({super.key, required this.url, this.onTap});
+  int w;
+  bool isUseLazyLoad = false;
+  EdgeInsets? margin;
+  ImageNetworkCustom(
+      {super.key, required this.url, this.onTap, this.margin, this.w = 600});
 
   @override
   State<ImageNetworkCustom> createState() => _ImageNetworkCustomState();
@@ -17,16 +21,12 @@ class _ImageNetworkCustomState extends State<ImageNetworkCustom>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    // return Container(
-    //   color: Color.fromARGB(Random().nextInt(255), Random().nextInt(255),
-    //       Random().nextInt(255), Random().nextInt(255)),
-    // );
     return InkWell(
       onTap: widget.onTap,
       child: CachedNetworkImage(
         imageUrl: widget.url,
         imageBuilder: (context, imageProvider) => Container(
-          margin: const EdgeInsets.all(8),
+          margin: widget.margin,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             image: DecorationImage(

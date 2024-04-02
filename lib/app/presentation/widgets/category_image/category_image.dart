@@ -14,6 +14,8 @@ class CategoryImage extends StatefulWidget {
   Alignment? alignment;
   double? textFontSize;
   EdgeInsets? margin;
+  EdgeInsets? padding;
+
   BoxBorder? border;
   CategoryImage(
       {super.key,
@@ -26,7 +28,8 @@ class CategoryImage extends StatefulWidget {
       this.border,
       this.widthImagePixel = 700,
       this.alignment = Alignment.bottomCenter,
-      this.margin});
+      this.margin,
+      this.padding});
 
   @override
   State<CategoryImage> createState() => _CategoryImageState();
@@ -47,6 +50,7 @@ class _CategoryImageState extends State<CategoryImage>
         imageBuilder: (context, imageProvider) {
           return Container(
               margin: widget.margin,
+              padding: widget.padding,
               decoration: BoxDecoration(
                   borderRadius: widget.borderRadius,
                   border: widget.border,
@@ -66,6 +70,7 @@ class _CategoryImageState extends State<CategoryImage>
         placeholder: (context, url) {
           return Container(
               margin: widget.margin,
+              padding: widget.padding,
               decoration: BoxDecoration(
                   borderRadius: widget.borderRadius,
                   border: widget.border,

@@ -88,6 +88,8 @@ class _PageBodyHomeState extends State<PageBodyHome>
           width: widthCategory,
           child: CategoryImage(
             category: widget.category,
+            borderRadius: BorderRadius.circular(12),
+            margin: const EdgeInsets.all(8),
           ),
         ),
         Expanded(
@@ -96,7 +98,10 @@ class _PageBodyHomeState extends State<PageBodyHome>
             cacheExtent: 1000,
             controller: scrollController,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, childAspectRatio: 0.5),
+                crossAxisCount: 2,
+                childAspectRatio: 0.5,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8),
             itemCount: medias.length,
             itemBuilder: (context, index) {
               final item = medias[index];

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:wallpaper_app/app/domain/entity/media.dart';
 import 'package:wallpaper_app/app/presentation/pages/show_wallpaper/component/wallpeper_download_favorite_fullscreen.dart';
 
+// ignore: must_be_immutable
 class ShowWallpaperPage extends StatefulWidget {
   List<Media> items;
   ShowWallpaperPage({super.key, required this.items});
@@ -30,7 +31,7 @@ class _ShowWallpaperPageState extends State<ShowWallpaperPage> {
 
   Widget _body() {
     return CarouselSlider.builder(
-        itemCount: widget.items.length >= 20 ? 20 : widget.items.length,
+        itemCount: widget.items.length,
         itemBuilder: (context, index, realIndex) {
           return WallpaperDownloadFavoriteFullScreen(
               media: widget.items[index]);
