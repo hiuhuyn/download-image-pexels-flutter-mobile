@@ -7,9 +7,9 @@ class VideoEntity extends Media {
   List<VideoPicturesEntity>? videoPictures;
 
   VideoEntity(
-      {id,
-      width,
-      height,
+      {super.id,
+      super.width,
+      super.height,
       this.image,
       this.duration,
       this.videoFiles,

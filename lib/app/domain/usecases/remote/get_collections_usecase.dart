@@ -6,7 +6,7 @@ class GetCollectionsUsecase {
   RepositoryRemote repo;
   GetCollectionsUsecase(this.repo);
   Future<DataState<List<CollectionEntity>>> call(
-      {int page = 1, int perPage = 1, bool getImageFirst = false}) {
-    return repo.getCollections(page, perPage, getImageFirst);
+      {int page = 1, int perPage = 1, bool getImageFirst = false}) async {
+    return await repo.getCollections(page, perPage, getImageFirst);
   }
 }

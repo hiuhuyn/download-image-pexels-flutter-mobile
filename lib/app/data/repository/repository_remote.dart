@@ -85,7 +85,9 @@ class RepositoryRemoteImpl implements RepositoryRemote {
   Future<DataState<List<PhotoEntity>>> getSearchPhotos(
       String query, int page, int perPage) async {
     try {
+      print("query: $query");
       final response = await api!.getSearchPhotos(query, page, perPage);
+      print("getSearchPhotos response: ${response.data}");
       if (response.statusCode == HttpStatus.ok) {
         List<PhotoEntity> medias = [];
         for (var element in response.data['photos']) {
@@ -100,6 +102,10 @@ class RepositoryRemoteImpl implements RepositoryRemote {
       }
     } on DioException catch (e) {
       return DataFailed(e);
+    } catch (e) {
+      return DataFailed(DioException(
+          requestOptions: RequestOptions(),
+          message: "Error getSearchPhotos: $e"));
     }
   }
 
@@ -159,9 +165,8 @@ class RepositoryRemoteImpl implements RepositoryRemote {
           }
         }
       } catch (e) {
-        if (kDebugMode) {
-          print("Lỗi getPhotosCategory: $e");
-        }
+        print("Error title:  ${element.title}");
+        print("Lỗi getPhotosCategory: $e");
       }
     }
     return DataSuccess<List<CategoryEntity>>(categories);
@@ -175,16 +180,24 @@ class RepositoryRemoteImpl implements RepositoryRemote {
       if (response.statusCode == HttpStatus.ok) {
         final items = response.data;
         if (items["collections"] != null) {
+          print("items map: ${items["collections"].length}");
           List<CollectionEntity> collections = [];
           if (getImageFirst) {
             for (var element in items["collections"]) {
               final collection = Collection.fromJson(element);
-              final photoResponse =
-                  await getSearchPhotos(collection.title ?? "", 1, 1);
-              if (photoResponse is DataSuccess) {
-                // collection.src = photoResponse.data.medias.first
+              if (collection.title != null && collection.title!.isNotEmpty) {
+                final photoResponse =
+                    await getSearchPhotos(collection.title!, 1, 1);
+                if (photoResponse is DataSuccess &&
+                    photoResponse.data != null &&
+                    photoResponse.data!.first.src != null) {
+                  collection.src = photoResponse.data!.first.src;
+                  collections.add(collection);
+                  print("collections leght: ${collections.length}");
+                } else {
+                  print(photoResponse.error);
+                }
               }
-              collections.add(collection);
             }
           } else {
             for (var element in items["collections"]) {

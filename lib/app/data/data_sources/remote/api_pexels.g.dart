@@ -49,13 +49,15 @@ class _ApiPexelsImpl implements ApiPexels {
   @override
   Future<Response> getCollections(int page, int perPage) async {
     return await dio.get(
-        "$BASE_API_PEXELS/v1/collections/featured?per_page=$perPage&page=$page");
+        "$BASE_API_PEXELS/v1/collections/featured?per_page=$perPage&page=$page",
+        options: Options(headers: {"Authorization": API_KEY}));
   }
 
   @override
   Future<Response> getMediaByCollectionId(
       String id, int page, int perPage) async {
     return await dio.get(
-        "$BASE_API_PEXELS/v1/collections/$id?per_page=$perPage&page=$page");
+        "$BASE_API_PEXELS/v1/collections/$id?per_page=$perPage&page=$page",
+        options: Options(headers: {"Authorization": API_KEY}));
   }
 }

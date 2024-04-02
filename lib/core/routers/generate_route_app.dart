@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:wallpaper_app/app/data/models/collection.dart';
 import 'package:wallpaper_app/app/domain/entity/media.dart';
 import 'package:wallpaper_app/app/presentation/pages/home/home_page.dart';
 import 'package:wallpaper_app/app/presentation/pages/error/page_not_found.dart';
-import 'package:wallpaper_app/app/presentation/pages/list_wallpaper_title/list_wallpaper_title_page.dart';
+import 'package:wallpaper_app/app/presentation/pages/list_wallpaper_by_collection/list_wallpaper_by_collection_page.dart';
 import 'package:wallpaper_app/app/presentation/pages/search/search_input_page.dart';
 import 'package:wallpaper_app/app/presentation/pages/search/search_page.dart';
 import 'package:wallpaper_app/app/presentation/pages/show_wallpaper/component/fullscreen_wallpaper_page.dart';
@@ -54,15 +55,22 @@ class GenerateRouteApp {
         return MaterialPageRoute(
             builder: (context) => const SearchPage(), settings: settings);
       case RoutesName.kSearchInput:
+        String? arguments = settings.arguments as String?;
         return MaterialPageRoute(
-            builder: (context) => SearchInputPage(), settings: settings);
-      case RoutesName.kListWallpaperTitle:
-        String title = "";
-        return MaterialPageRoute(
-            builder: (context) => ListWallpaperTitltePage(
-                  title: title,
-                ),
+            builder: (context) => SearchInputPage(keyword: arguments),
             settings: settings);
+      case RoutesName.kListWallpaperByCollection:
+        final arguments = settings.arguments;
+        if (arguments is Collection) {
+          return MaterialPageRoute(
+              builder: (context) => ListWallpaperByCollectionPage(
+                    collection: arguments,
+                  ),
+              settings: settings);
+        } else {
+          return MaterialPageRoute(
+              builder: (context) => const PageNotFound(), settings: settings);
+        }
       default:
         return MaterialPageRoute(
             builder: (context) => const PageNotFound(), settings: settings);

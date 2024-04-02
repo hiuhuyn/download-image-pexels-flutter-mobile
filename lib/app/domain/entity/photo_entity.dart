@@ -4,9 +4,9 @@ class PhotoEntity extends Media {
   String? src;
 
   PhotoEntity({
-    id,
-    width,
-    height,
+    super.id,
+    super.width,
+    super.height,
     this.src,
   });
 

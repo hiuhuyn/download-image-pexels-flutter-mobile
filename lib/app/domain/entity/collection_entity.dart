@@ -7,6 +7,6 @@ class CollectionEntity {
   CollectionEntity({this.id, this.title, this.description, this.src});
   @override
   String toString() {
-    return 'CollectionEntity{id: $id, title: $title, description: $description}';
+    return 'CollectionEntity{id: $id, title: $title, description: $description, src: $src}';
   }
 }

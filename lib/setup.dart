@@ -7,6 +7,8 @@ import 'package:wallpaper_app/app/data/repository/repository_remote.dart';
 import 'package:wallpaper_app/app/domain/reppository/repository_local.dart';
 import 'package:wallpaper_app/app/domain/reppository/repository_remote.dart';
 import 'package:wallpaper_app/app/domain/usecases/local/get_categorys_local_usecase.dart';
+import 'package:wallpaper_app/app/domain/usecases/remote/get_collections_usecase.dart';
+import 'package:wallpaper_app/app/domain/usecases/remote/get_media_by_collectionId_usecase.dart';
 import 'package:wallpaper_app/app/domain/usecases/remote/photo/get_curated_photos_usecase.dart';
 import 'package:wallpaper_app/app/domain/usecases/remote/photo/get_photos_category.dart';
 import 'package:wallpaper_app/app/domain/usecases/remote/photo/get_search_photos_usecase.dart';
@@ -49,4 +51,8 @@ Future initlizeDependencies() async {
       () => GetSearchVideosUsecase(sl()));
   sl.registerLazySingleton<GetCuratedPhotosUsecase>(
       () => GetCuratedPhotosUsecase(sl()));
+  sl.registerLazySingleton<GetCollectionsUsecase>(
+      () => GetCollectionsUsecase(sl()));
+  sl.registerLazySingleton<GetMediaByCollectionIdUsecase>(
+      () => GetMediaByCollectionIdUsecase(sl()));
 }

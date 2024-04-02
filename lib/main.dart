@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wallpaper_app/app/presentation/pages/home/bloc/home_bloc.dart';
+import 'package:wallpaper_app/app/presentation/pages/search/bloc/search_bloc.dart';
 import 'package:wallpaper_app/core/routers/generate_route_app.dart';
 import 'package:wallpaper_app/core/routers/routes_name.dart';
 import 'package:wallpaper_app/setup.dart';
@@ -23,7 +24,8 @@ class MyApp extends StatelessWidget {
               getCategorys: sl(),
               getCuratedPhotos: sl(),
             ),
-          )
+          ),
+          BlocProvider(create: (context) => SearchBloc(sl(), sl()))
         ],
         child: MaterialApp(
           title: 'Wallpaper',
