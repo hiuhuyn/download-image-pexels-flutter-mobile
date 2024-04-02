@@ -4,12 +4,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:wallpaper_app/app/data/data_sources/remote/api_pexels.dart';
 import 'package:wallpaper_app/app/data/models/collection.dart';
-import 'package:wallpaper_app/app/data/models/page.dart';
 import 'package:wallpaper_app/app/data/models/photo.dart';
 import 'package:wallpaper_app/app/data/models/video.dart';
 import 'package:wallpaper_app/app/domain/entity/category_entity.dart';
 import 'package:wallpaper_app/app/domain/entity/collection_entity.dart';
-import 'package:wallpaper_app/app/domain/entity/page_entity.dart';
+import 'package:wallpaper_app/app/domain/entity/media.dart';
 import 'package:wallpaper_app/app/domain/entity/photo_entity.dart';
 import 'package:wallpaper_app/app/domain/entity/video_entity.dart';
 import 'package:wallpaper_app/app/domain/reppository/repository_remote.dart';
@@ -22,13 +21,18 @@ class RepositoryRemoteImpl implements RepositoryRemote {
   }
 
   @override
-  Future<DataState<PageEntity>> getCuratedPhotos(int page, int perPage) async {
+  Future<DataState<List<PhotoEntity>>> getCuratedPhotos(
+      int page, int perPage) async {
     try {
       final response = await api!.getCuratedPhotos(page, perPage);
       if (response.statusCode == HttpStatus.ok) {
-        return DataSuccess<PageEntity>(Page.fromJson(response.data));
+        List<PhotoEntity> medias = [];
+        for (var element in response.data['photos']) {
+          medias.add(Photo.fromJson(element));
+        }
+        return DataSuccess<List<PhotoEntity>>(medias);
       } else {
-        return DataFailed<PageEntity>(DioException(
+        return DataFailed(DioException(
             requestOptions: response.requestOptions,
             response: response,
             message: response.statusMessage));
@@ -39,13 +43,18 @@ class RepositoryRemoteImpl implements RepositoryRemote {
   }
 
   @override
-  Future<DataState<PageEntity>> getPopularVideos(int page, int perPage) async {
+  Future<DataState<List<VideoEntity>>> getPopularVideos(
+      int page, int perPage) async {
     try {
       final response = await api!.getPopularVideos(page, perPage);
       if (response.statusCode == HttpStatus.ok) {
-        return DataSuccess<PageEntity>(Page.fromJson(response.data));
+        List<VideoEntity> medias = [];
+        for (var element in response.data['videos']) {
+          medias.add(Video.fromJson(element));
+        }
+        return DataSuccess<List<VideoEntity>>(medias);
       } else {
-        return DataFailed<PageEntity>(DioException(
+        return DataFailed(DioException(
             requestOptions: response.requestOptions,
             response: response,
             message: response.statusMessage));
@@ -73,14 +82,18 @@ class RepositoryRemoteImpl implements RepositoryRemote {
   }
 
   @override
-  Future<DataState<PageEntity>> getSearchPhotos(
+  Future<DataState<List<PhotoEntity>>> getSearchPhotos(
       String query, int page, int perPage) async {
     try {
       final response = await api!.getSearchPhotos(query, page, perPage);
       if (response.statusCode == HttpStatus.ok) {
-        return DataSuccess<PageEntity>(Page.fromJson(response.data));
+        List<PhotoEntity> medias = [];
+        for (var element in response.data['photos']) {
+          medias.add(Photo.fromJson(element));
+        }
+        return DataSuccess(medias);
       } else {
-        return DataFailed<PageEntity>(DioException(
+        return DataFailed(DioException(
             requestOptions: response.requestOptions,
             response: response,
             message: response.statusMessage));
@@ -91,14 +104,18 @@ class RepositoryRemoteImpl implements RepositoryRemote {
   }
 
   @override
-  Future<DataState<PageEntity>> getSearchVideos(
+  Future<DataState<List<VideoEntity>>> getSearchVideos(
       String query, int page, int perPage) async {
     try {
       final response = await api!.getSearchVideos(query, page, perPage);
       if (response.statusCode == HttpStatus.ok) {
-        return DataSuccess<PageEntity>(Page.fromJson(response.data));
+        List<VideoEntity> medias = [];
+        for (var element in response.data['videos']) {
+          medias.add(Video.fromJson(element));
+        }
+        return DataSuccess(medias);
       } else {
-        return DataFailed<PageEntity>(DioException(
+        return DataFailed(DioException(
             requestOptions: response.requestOptions,
             response: response,
             message: response.statusMessage));
@@ -133,8 +150,8 @@ class RepositoryRemoteImpl implements RepositoryRemote {
       try {
         final response = await api!.getSearchPhotos(element.title, 1, 1);
         if (response.statusCode == HttpStatus.ok) {
-          Page page = Page.fromJson(response.data);
-          PhotoEntity photo = page.medias!.first as PhotoEntity;
+          final List<dynamic> photos = response.data['photos'];
+          PhotoEntity photo = Photo.fromJson(photos.first);
           String? urlImg = photo.src;
           if (urlImg != null) {
             categories.add(CategoryEntity(
@@ -152,15 +169,27 @@ class RepositoryRemoteImpl implements RepositoryRemote {
 
   @override
   Future<DataState<List<CollectionEntity>>> getCollections(
-      int page, int perPage) async {
+      int page, int perPage, bool getImageFirst) async {
     try {
       final response = await api!.getCollections(page, perPage);
       if (response.statusCode == HttpStatus.ok) {
-        final items = response.data as Map<String, dynamic>;
+        final items = response.data;
         if (items["collections"] != null) {
           List<CollectionEntity> collections = [];
-          for (var element in items["collections"]) {
-            collections.add(Collection.fromJson(element));
+          if (getImageFirst) {
+            for (var element in items["collections"]) {
+              final collection = Collection.fromJson(element);
+              final photoResponse =
+                  await getSearchPhotos(collection.title ?? "", 1, 1);
+              if (photoResponse is DataSuccess) {
+                // collection.src = photoResponse.data.medias.first
+              }
+              collections.add(collection);
+            }
+          } else {
+            for (var element in items["collections"]) {
+              collections.add(Collection.fromJson(element));
+            }
           }
           return DataSuccess<List<CollectionEntity>>(collections);
         } else {
@@ -178,13 +207,34 @@ class RepositoryRemoteImpl implements RepositoryRemote {
   }
 
   @override
-  Future<DataState<PageEntity>> getMediaByCollectionId(
+  Future<DataState<List<Media>>> getMediaByCollectionId(
       String collectionId, int page, int perPer) async {
     try {
       final response =
           await api!.getMediaByCollectionId(collectionId, page, perPer);
       if (response.statusCode == HttpStatus.ok) {
-        return DataSuccess<PageEntity>(Page.fromJson(response.data));
+        List<Media> medias = [];
+        if (response.data['photos'] != null) {
+          for (var element in response.data['photos']) {
+            medias.add(Photo.fromJson(element));
+          }
+        }
+        if (response.data['videos'] != null) {
+          for (var element in response.data['videos']) {
+            medias.add(Video.fromJson(element));
+          }
+        }
+        if (response.data['media'] != null) {
+          for (var element in response.data['media']) {
+            if (element['type'] == "Video") {
+              medias.add(Video.fromJson(element));
+            } else {
+              medias.add(Photo.fromJson(element));
+            }
+          }
+        }
+
+        return DataSuccess<List<Media>>(medias);
       } else {
         return DataFailed(DioException(
             requestOptions: response.requestOptions,

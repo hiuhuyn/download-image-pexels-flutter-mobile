@@ -39,7 +39,7 @@ class _PageBodyHomeState extends State<PageBodyHome>
           .call(query: widget.category.title, page: page++, perPage: perPage);
       if (request is DataSuccess) {
         setState(() {
-          medias.addAll(request.data!.medias!);
+          medias.addAll(request.data!);
         });
         page++;
       } else {
@@ -86,16 +86,17 @@ class _PageBodyHomeState extends State<PageBodyHome>
           duration: const Duration(milliseconds: 1000),
           height: heightCategory,
           width: widthCategory,
+          padding: const EdgeInsets.all(2),
           child: CategoryImage(
             category: widget.category,
             borderRadius: BorderRadius.circular(12),
-            margin: const EdgeInsets.all(8),
           ),
         ),
         Expanded(
           child: GridView.builder(
             physics: const BouncingScrollPhysics(),
             cacheExtent: 1000,
+            padding: const EdgeInsets.all(8),
             controller: scrollController,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,

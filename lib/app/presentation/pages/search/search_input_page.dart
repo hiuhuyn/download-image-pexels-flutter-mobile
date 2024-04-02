@@ -32,7 +32,7 @@ class _SearchInputPageState extends State<SearchInputPage> {
           .call(page: page++, perPage: perPage);
       if (req is DataSuccess) {
         setState(() {
-          _medias.addAll(req.data!.medias!);
+          _medias.addAll(req.data!);
           page++;
         });
       }
@@ -41,7 +41,7 @@ class _SearchInputPageState extends State<SearchInputPage> {
           .call(query: _textCtrl.text, page: page++, perPage: perPage);
       if (req is DataSuccess) {
         setState(() {
-          _medias.addAll(req.data!.medias!);
+          _medias.addAll(req.data!);
           page++;
         });
       }
@@ -148,9 +148,9 @@ class _SearchInputPageState extends State<SearchInputPage> {
               },
               url: Photo.fromEntity(item).srcLazy(w: 400)!);
         } else if (item is VideoEntity) {
-          return Text("Video");
+          return const Text("Video");
         } else {
-          return Text("Error");
+          return const Text("Error");
         }
       },
     ));

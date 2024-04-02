@@ -17,8 +17,8 @@ class GetPhotosCategoryUsecase {
       {required CategoryEntity value}) async {
     final req = await repo.getSearchPhotos(value.title, 1, 1);
     if (req is DataSuccess) {
-      final photo = req.data?.medias?.first;
-      if (photo != null && photo is PhotoEntity) {
+      final photo = req.data?.first;
+      if (photo != null) {
         value.src = photo.src;
         return DataSuccess(value);
       } else {
