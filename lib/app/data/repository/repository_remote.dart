@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:wallpaper_app/app/data/data_sources/remote/api_pexels.dart';
+import 'package:wallpaper_app/app/data/models/collection.dart';
 import 'package:wallpaper_app/app/data/models/page.dart';
 import 'package:wallpaper_app/app/data/models/photo.dart';
 import 'package:wallpaper_app/app/data/models/video.dart';
 import 'package:wallpaper_app/app/domain/entity/category_entity.dart';
+import 'package:wallpaper_app/app/domain/entity/collection_entity.dart';
 import 'package:wallpaper_app/app/domain/entity/page_entity.dart';
 import 'package:wallpaper_app/app/domain/entity/photo_entity.dart';
 import 'package:wallpaper_app/app/domain/entity/video_entity.dart';
@@ -146,5 +148,51 @@ class RepositoryRemoteImpl implements RepositoryRemote {
       }
     }
     return DataSuccess<List<CategoryEntity>>(categories);
+  }
+
+  @override
+  Future<DataState<List<CollectionEntity>>> getCollections(
+      int page, int perPage) async {
+    try {
+      final response = await api!.getCollections(page, perPage);
+      if (response.statusCode == HttpStatus.ok) {
+        final items = response.data as Map<String, dynamic>;
+        if (items["collections"] != null) {
+          List<CollectionEntity> collections = [];
+          for (var element in items["collections"]) {
+            collections.add(Collection.fromJson(element));
+          }
+          return DataSuccess<List<CollectionEntity>>(collections);
+        } else {
+          return const DataSuccess<List<CollectionEntity>>([]);
+        }
+      } else {
+        return DataFailed<List<CollectionEntity>>(DioException(
+            requestOptions: response.requestOptions,
+            response: response,
+            message: response.statusMessage));
+      }
+    } on DioException catch (e) {
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<PageEntity>> getMediaByCollectionId(
+      String collectionId, int page, int perPer) async {
+    try {
+      final response =
+          await api!.getMediaByCollectionId(collectionId, page, perPer);
+      if (response.statusCode == HttpStatus.ok) {
+        return DataSuccess<PageEntity>(Page.fromJson(response.data));
+      } else {
+        return DataFailed(DioException(
+            requestOptions: response.requestOptions,
+            response: response,
+            message: response.statusMessage));
+      }
+    } on DioException catch (e) {
+      return DataFailed(e);
+    }
   }
 }

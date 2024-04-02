@@ -27,10 +27,18 @@ class Page extends PageEntity {
       json['photos'].forEach((photo) {
         medias.add(Photo.fromJson(photo));
       });
-    }
-    if (json['videos'] != null) {
+    } else if (json['videos'] != null) {
       json['videos'].forEach((video) {
         medias.add(Video.fromJson(video));
+      });
+    } else if (json['media'] != null) {
+      json['media'].forEach((media) {
+        if (media['type'] == 'Video') {
+          medias.add(Video.fromJson(media));
+        }
+        if (media['type'] == 'Photo') {
+          medias.add(Photo.fromJson(media));
+        }
       });
     }
     return Page(

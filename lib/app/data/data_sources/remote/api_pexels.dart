@@ -12,4 +12,6 @@ abstract class ApiPexels {
   Future<Response> getVideoById(String id);
   Future<Response> getPopularVideos(int page, int perPage);
   Future<Response> getSearchVideos(String query, int page, int perPage);
+  Future<Response> getCollections(int page, int perPage);
+  Future<Response> getMediaByCollectionId(String id, int page, int perPage);
 }

@@ -45,4 +45,17 @@ class _ApiPexelsImpl implements ApiPexels {
     return await dio.get("$BASE_API_PEXELS/videos/videos/$id",
         options: Options(headers: {"Authorization": API_KEY}));
   }
+
+  @override
+  Future<Response> getCollections(int page, int perPage) async {
+    return await dio.get(
+        "$BASE_API_PEXELS/v1/collections/featured?per_page=$perPage&page=$page");
+  }
+
+  @override
+  Future<Response> getMediaByCollectionId(
+      String id, int page, int perPage) async {
+    return await dio.get(
+        "$BASE_API_PEXELS/v1/collections/$id?per_page=$perPage&page=$page");
+  }
 }
