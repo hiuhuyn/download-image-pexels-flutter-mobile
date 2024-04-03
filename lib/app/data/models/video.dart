@@ -10,6 +10,18 @@ class Video extends VideoEntity {
       super.videoFiles,
       super.videoPictures});
 
+  factory Video.fromEntity(VideoEntity entity) {
+    return Video(
+      id: entity.id,
+      width: entity.width,
+      height: entity.height,
+      image: entity.image,
+      duration: entity.duration,
+      videoFiles: entity.videoFiles,
+      videoPictures: entity.videoPictures,
+    );
+  }
+
   factory Video.fromJson(Map<String, dynamic> json) {
     return Video(
       id: json['id'],
@@ -20,12 +32,14 @@ class Video extends VideoEntity {
       duration: json['duration'],
       // ignore: prefer_null_aware_operators
       videoFiles: json['video_files'] != null
-          ? json['video_files'].map((e) => VideoFiles.fromJson(e)).toList()
+          ? json['video_files']
+              .map<VideoFiles>((e) => VideoFiles.fromJson(e))
+              .toList()
           : null,
       // ignore: prefer_null_aware_operators
       videoPictures: json['video_pictures'] != null
           ? json['video_pictures']
-              .map((e) => VideoPictures.fromJson(e))
+              .map<VideoPictures>((e) => VideoPictures.fromJson(e))
               .toList()
           : null,
     );
@@ -53,21 +67,14 @@ class Video extends VideoEntity {
   }
 }
 
-class VideoFiles {
-  int? id;
-  String? quality;
-  String? fileType;
-  int? width;
-  int? height;
-  String? link;
-
+class VideoFiles extends VideoFilesEntity {
   VideoFiles(
-      {this.id,
-      this.quality,
-      this.fileType,
-      this.width,
-      this.height,
-      this.link});
+      {super.id,
+      super.quality,
+      super.fileType,
+      super.width,
+      super.height,
+      super.link});
 
   factory VideoFiles.fromEntity(VideoFilesEntity entity) {
     return VideoFiles(

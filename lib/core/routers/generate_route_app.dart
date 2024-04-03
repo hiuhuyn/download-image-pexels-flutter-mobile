@@ -3,7 +3,7 @@ import 'package:wallpaper_app/app/data/models/collection.dart';
 import 'package:wallpaper_app/app/domain/entity/media.dart';
 import 'package:wallpaper_app/app/presentation/pages/home/home_page.dart';
 import 'package:wallpaper_app/app/presentation/pages/error/page_not_found.dart';
-import 'package:wallpaper_app/app/presentation/pages/list_wallpaper_by_collection/list_wallpaper_by_collection_page.dart';
+import 'package:wallpaper_app/app/presentation/pages/show_wallpaper/list_wallpaper_by_collection_page.dart';
 import 'package:wallpaper_app/app/presentation/pages/search/search_input_page.dart';
 import 'package:wallpaper_app/app/presentation/pages/search/search_page.dart';
 import 'package:wallpaper_app/app/presentation/pages/show_wallpaper/component/fullscreen_wallpaper_page.dart';

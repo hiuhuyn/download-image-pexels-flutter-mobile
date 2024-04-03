@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:wallpaper_app/app/data/models/photo.dart';
+import 'package:wallpaper_app/app/data/models/video.dart';
 import 'package:wallpaper_app/app/domain/entity/collection_entity.dart';
 import 'package:wallpaper_app/app/domain/entity/media.dart';
 import 'package:wallpaper_app/app/domain/entity/photo_entity.dart';
 import 'package:wallpaper_app/app/domain/entity/video_entity.dart';
 import 'package:wallpaper_app/app/domain/usecases/remote/get_media_by_collectionId_usecase.dart';
-import 'package:wallpaper_app/app/presentation/widgets/image_network_custom_1.dart';
+import 'package:wallpaper_app/app/presentation/widgets/image_network_custom.dart';
 import 'package:wallpaper_app/core/routers/routes_name.dart';
 import 'package:wallpaper_app/core/state/data_state.dart';
 import 'package:wallpaper_app/setup.dart';
@@ -27,7 +28,6 @@ class _ListWallpaperByCollectionPageState
   int page = 0;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     loadMore();
     scrollController.addListener(() {
@@ -65,9 +65,9 @@ class _ListWallpaperByCollectionPageState
           if (item is PhotoEntity) {
             return _itemImage(item, index);
           }
-          // if (item is VideoEntity) {
-          //   return _itemVideo(item, index);
-          // }
+          if (item is VideoEntity) {
+            return _itemVideo(item, index);
+          }
           return const Spacer();
         },
       ),
@@ -106,7 +106,7 @@ class _ListWallpaperByCollectionPageState
   Widget _itemImage(PhotoEntity photo, int index) {
     return Ink(
         child: ImageNetworkCustom(
-      url: Photo.fromEntity(photo).srcLazy()!,
+      url: Photo.fromEntity(photo).src!,
       onTap: () {
         List<Media> items = medias.sublist(index);
         if (items.length < 15) {
@@ -123,9 +123,24 @@ class _ListWallpaperByCollectionPageState
     ));
   }
 
-  Widget _itemVideo(VideoEntity vieo, int index) {
+  Widget _itemVideo(VideoEntity video, int index) {
     return Ink(
-      child: const Text("Video"),
-    );
+        child: ImageNetworkCustom(
+      url: Video.fromEntity(video).image!,
+      isUrlByVideo: true,
+      onTap: () {
+        List<Media> items = medias.sublist(index);
+        if (items.length < 15) {
+          loadMore().then((value) {
+            items = medias.sublist(index);
+            Navigator.pushNamed(context, RoutesName.kListWallpaperSelect,
+                arguments: items);
+          });
+        } else {
+          Navigator.pushNamed(context, RoutesName.kListWallpaperSelect,
+              arguments: items);
+        }
+      },
+    ));
   }
 }

@@ -6,7 +6,7 @@ import 'package:wallpaper_app/app/domain/entity/photo_entity.dart';
 import 'package:wallpaper_app/app/domain/entity/video_entity.dart';
 import 'package:wallpaper_app/app/domain/usecases/remote/photo/get_curated_photos_usecase.dart';
 import 'package:wallpaper_app/app/domain/usecases/remote/photo/get_search_photos_usecase.dart';
-import 'package:wallpaper_app/app/presentation/widgets/image_network_custom_1.dart';
+import 'package:wallpaper_app/app/presentation/widgets/image_network_custom.dart';
 import 'package:wallpaper_app/core/routers/routes_name.dart';
 import 'package:wallpaper_app/core/state/data_state.dart';
 import 'package:wallpaper_app/setup.dart';
