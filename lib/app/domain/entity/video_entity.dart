@@ -4,7 +4,6 @@ class VideoEntity extends Media {
   String? image;
   int? duration;
   List<VideoFilesEntity>? videoFiles;
-  List<VideoPicturesEntity>? videoPictures;
 
   VideoEntity(
       {super.id,
@@ -12,8 +11,7 @@ class VideoEntity extends Media {
       super.height,
       this.image,
       this.duration,
-      this.videoFiles,
-      this.videoPictures});
+      this.videoFiles});
 }
 
 class VideoFilesEntity {
@@ -31,12 +29,4 @@ class VideoFilesEntity {
       this.width,
       this.height,
       this.link});
-}
-
-class VideoPicturesEntity {
-  int? id;
-  String? picture;
-  int? nr;
-
-  VideoPicturesEntity({this.id, this.picture, this.nr});
 }

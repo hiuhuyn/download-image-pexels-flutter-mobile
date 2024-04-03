@@ -7,8 +7,7 @@ class Video extends VideoEntity {
       super.height,
       super.image,
       super.duration,
-      super.videoFiles,
-      super.videoPictures});
+      super.videoFiles});
 
   factory Video.fromEntity(VideoEntity entity) {
     return Video(
@@ -18,7 +17,6 @@ class Video extends VideoEntity {
       image: entity.image,
       duration: entity.duration,
       videoFiles: entity.videoFiles,
-      videoPictures: entity.videoPictures,
     );
   }
 
@@ -36,12 +34,6 @@ class Video extends VideoEntity {
               .map<VideoFiles>((e) => VideoFiles.fromJson(e))
               .toList()
           : null,
-      // ignore: prefer_null_aware_operators
-      videoPictures: json['video_pictures'] != null
-          ? json['video_pictures']
-              .map<VideoPictures>((e) => VideoPictures.fromJson(e))
-              .toList()
-          : null,
     );
   }
 
@@ -57,11 +49,6 @@ class Video extends VideoEntity {
     if (videoFiles != null) {
       data['video_files'] =
           videoFiles!.map((v) => VideoFiles.fromEntity(v).toJson()).toList();
-    }
-    if (videoPictures != null) {
-      data['video_pictures'] = videoPictures!
-          .map((v) => VideoPictures.fromEntity(v).toJson())
-          .toList();
     }
     return data;
   }
@@ -105,34 +92,6 @@ class VideoFiles extends VideoFilesEntity {
     data['width'] = width;
     data['height'] = height;
     data['link'] = link;
-    return data;
-  }
-}
-
-class VideoPictures extends VideoPicturesEntity {
-  VideoPictures({super.id, super.picture, super.nr});
-
-  factory VideoPictures.fromEntity(VideoPicturesEntity entity) {
-    return VideoPictures(
-      id: entity.id,
-      picture: entity.picture,
-      nr: entity.nr,
-    );
-  }
-
-  factory VideoPictures.fromJson(Map<String, dynamic> json) {
-    return VideoPictures(
-      id: json['id'],
-      picture: json['picture'],
-      nr: json['nr'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['picture'] = picture;
-    data['nr'] = nr;
     return data;
   }
 }
