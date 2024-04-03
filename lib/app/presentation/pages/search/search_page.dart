@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wallpaper_app/app/domain/entity/category_entity.dart';
 import 'package:wallpaper_app/app/presentation/pages/search/bloc/search_bloc.dart';
 import 'package:wallpaper_app/app/presentation/pages/search/bloc/search_state.dart';
-import 'package:wallpaper_app/app/presentation/widgets/category_image/category_image.dart';
+import 'package:wallpaper_app/app/presentation/widgets/category_image.dart';
 import 'package:wallpaper_app/core/enum/type_file.dart';
 import 'package:wallpaper_app/core/routers/routes_name.dart';
 import 'package:wallpaper_app/setup.dart';

@@ -10,8 +10,11 @@ class LoadingWidget extends StatefulWidget {
 class _LoadingWidgetState extends State<LoadingWidget> {
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: CircularProgressIndicator(),
+    return Container(
+      color: Colors.grey.withOpacity(0.4),
+      child: const Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 }

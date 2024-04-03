@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:wallpaper_app/app/domain/entity/media.dart';
 import 'package:wallpaper_app/app/domain/entity/photo_entity.dart';
 import 'package:wallpaper_app/app/domain/entity/video_entity.dart';
+import 'package:wallpaper_app/app/presentation/widgets/video_network_custom.dart';
 import 'package:wallpaper_app/core/enum/type_file.dart';
 import 'package:wallpaper_app/core/routers/routes_name.dart';
 
@@ -108,7 +109,15 @@ class _WallpaperDownloadFavoriteFullScreenState
   }
 
   Widget _videoBody(VideoEntity video) {
-    return Container();
+    return Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: VideoNetworkCustom(video: video)));
   }
 
   void _onFavorite() {

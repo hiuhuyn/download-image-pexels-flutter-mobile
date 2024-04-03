@@ -31,7 +31,7 @@ class _ShowWallpaperPageState extends State<ShowWallpaperPage> {
 
   Widget _body() {
     return CarouselSlider.builder(
-        itemCount: widget.items.length,
+        itemCount: widget.items.length > 10 ? 10 : widget.items.length,
         itemBuilder: (context, index, realIndex) {
           return WallpaperDownloadFavoriteFullScreen(
               media: widget.items[index]);

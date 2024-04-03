@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class FailedWidget extends StatelessWidget {
-  DioException error;
+  Exception error;
   FailedWidget({super.key, required this.error});
 
   @override
@@ -12,7 +12,7 @@ class FailedWidget extends StatelessWidget {
     // ignore: avoid_unnecessary_containers
     return Container(
       child: Text(
-        error.message!,
+        error.toString()!,
         style: const TextStyle(color: Colors.red),
       ),
     );
