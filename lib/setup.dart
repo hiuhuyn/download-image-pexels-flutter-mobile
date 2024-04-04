@@ -12,6 +12,7 @@ import 'package:wallpaper_app/app/domain/usecases/remote/get_media_by_collection
 import 'package:wallpaper_app/app/domain/usecases/remote/photo/get_curated_photos_usecase.dart';
 import 'package:wallpaper_app/app/domain/usecases/remote/photo/get_photos_category.dart';
 import 'package:wallpaper_app/app/domain/usecases/remote/photo/get_search_photos_usecase.dart';
+import 'package:wallpaper_app/app/domain/usecases/remote/video/get_popular_videos_usecase.dart';
 import 'package:wallpaper_app/app/domain/usecases/remote/video/get_search_video_usecase.dart';
 
 final sl = GetIt.instance;
@@ -55,4 +56,6 @@ Future initlizeDependencies() async {
       () => GetCollectionsUsecase(sl()));
   sl.registerLazySingleton<GetMediaByCollectionIdUsecase>(
       () => GetMediaByCollectionIdUsecase(sl()));
+  sl.registerLazySingleton<GetPopularVideosUsecase>(
+      () => GetPopularVideosUsecase(sl()));
 }

@@ -104,8 +104,7 @@ class _ListWallpaperByCollectionPageState
   }
 
   Widget _itemImage(PhotoEntity photo, int index) {
-    return Ink(
-        child: ImageNetworkCustom(
+    return ImageNetworkCustom(
       url: Photo.fromEntity(photo).src!,
       onTap: () {
         List<Media> items = medias.sublist(index);
@@ -120,12 +119,11 @@ class _ListWallpaperByCollectionPageState
               arguments: items);
         }
       },
-    ));
+    );
   }
 
   Widget _itemVideo(VideoEntity video, int index) {
-    return Ink(
-        child: ImageNetworkCustom(
+    return ImageNetworkCustom(
       url: Video.fromEntity(video).image!,
       isUrlByVideo: true,
       onTap: () {
@@ -141,6 +139,6 @@ class _ListWallpaperByCollectionPageState
               arguments: items);
         }
       },
-    ));
+    );
   }
 }
