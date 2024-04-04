@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:wallpaper_app/app/domain/entity/media.dart';
 
 class VideoEntity extends Media {
@@ -9,9 +10,15 @@ class VideoEntity extends Media {
       {super.id,
       super.width,
       super.height,
+      super.url,
       this.image,
       this.duration,
       this.videoFiles});
+
+  @override
+  String toString() {
+    return '${super.toString()} : VideoEntity(image: $image, duration: $duration, videoFiles: $videoFiles)';
+  }
 }
 
 class VideoFilesEntity {

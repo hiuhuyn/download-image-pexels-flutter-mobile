@@ -4,57 +4,90 @@ import 'package:wallpaper_app/app/domain/entity/video_entity.dart';
 import 'package:wallpaper_app/app/presentation/widgets/failed_widget.dart';
 import 'package:wallpaper_app/app/presentation/widgets/loading_widget.dart';
 
+// ignore: must_be_immutable
 class VideoNetworkCustom extends StatefulWidget {
-  VideoEntity video;
-  VideoNetworkCustom({super.key, required this.video});
+  VideoEntity? video;
+  VideoPlayerController? controller;
+  Function(VideoPlayerController value)? controllerBuild;
+  VideoNetworkCustom._({this.video, this.controller, this.controllerBuild});
+  factory VideoNetworkCustom.fromVideo(
+      {required VideoEntity video,
+      Function(VideoPlayerController value)? controllerBuild}) {
+    return VideoNetworkCustom._(
+      video: video,
+      controllerBuild: controllerBuild,
+    );
+  }
+  factory VideoNetworkCustom.fromController(
+      {required VideoPlayerController controller}) {
+    return VideoNetworkCustom._(controller: controller);
+  }
 
   @override
   State<VideoNetworkCustom> createState() => _VideoNetworkCustomState();
 }
 
-class _VideoNetworkCustomState extends State<VideoNetworkCustom> {
+class _VideoNetworkCustomState extends State<VideoNetworkCustom>
+    with AutomaticKeepAliveClientMixin {
   late VideoPlayerController _controller;
   String? url;
 
   @override
   void initState() {
-    print("intit video");
     super.initState();
-    for (var element in widget.video.videoFiles!) {
-      if (element.fileType == "video/mp4") {
-        url = element.link!;
-        if ((element.width! > 800 || element.height! > 800) &&
-            (element.width! < 1200 || element.height! < 1200)) {
-          url = element.link!;
-          break;
-        }
-      }
-    }
-    _controller = VideoPlayerController.networkUrl(
-        Uri.parse(url ?? widget.video.videoFiles!.first.link!))
-      ..setLooping(true)
-      ..initialize().then((_) {
-        setState(() {
-          _controller.play();
-        });
-      })
-      ..addListener(() {
-        if (!_controller.value.isPlaying) {
+    if (widget.controller != null) {
+      _controller = widget.controller!
+        ..setLooping(true)
+        ..initialize().then((_) {
           setState(() {
+            if (widget.controllerBuild != null) {
+              widget.controllerBuild!(_controller);
+            }
             _controller.play();
           });
+        })
+        ..addListener(() {
+          if (!_controller.value.isPlaying) {
+            setState(() {
+              _controller.play();
+            });
+          }
+        });
+    } else if (widget.video != null) {
+      for (var element in widget.video!.videoFiles!) {
+        if (element.fileType == "video/mp4") {
+          url = element.link!;
+          if ((element.width! > 800 || element.height! > 800) &&
+              (element.width! < 1200 || element.height! < 1200)) {
+            url = element.link!;
+            break;
+          }
         }
-      });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
+      }
+      _controller = VideoPlayerController.networkUrl(
+          Uri.parse(url ?? widget.video!.videoFiles!.first.link!))
+        ..setLooping(true)
+        ..initialize().then((_) {
+          setState(() {
+            if (widget.controllerBuild != null) {
+              widget.controllerBuild!(_controller);
+            }
+            _controller.play();
+          });
+        })
+        ..addListener(() {
+          if (!_controller.value.isPlaying) {
+            setState(() {
+              _controller.play();
+            });
+          }
+        });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     try {
       return _controller.value.isInitialized
           ? FittedBox(
@@ -74,4 +107,8 @@ class _VideoNetworkCustomState extends State<VideoNetworkCustom> {
       return FailedWidget(error: e);
     }
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

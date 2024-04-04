@@ -1,25 +1,32 @@
 import 'dart:async';
-import 'dart:ui';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:video_player/video_player.dart';
+import 'package:wallpaper_app/app/presentation/widgets/video_network_custom.dart';
 
 // ignore: must_be_immutable
-class FullScreenWallpaperImagePage extends StatefulWidget {
-  final ImageProvider? image;
-  final String url;
-  const FullScreenWallpaperImagePage(
-      {super.key, this.image, required this.url});
+class FullScreenWallpaperPage extends StatefulWidget {
+  ImageProvider? image;
+  String url;
+  VideoPlayerController? videoPlayerController;
 
+  FullScreenWallpaperPage._(
+      {this.image, required this.url, this.videoPlayerController});
+  factory FullScreenWallpaperPage.fromImage(
+      {ImageProvider? image, required String url}) {
+    return FullScreenWallpaperPage._(image: image, url: url);
+  }
+  factory FullScreenWallpaperPage.fromVideo(
+      {VideoPlayerController? videoPlayerController, required String url}) {
+    return FullScreenWallpaperPage._(
+        videoPlayerController: videoPlayerController, url: url);
+  }
   @override
-  State<FullScreenWallpaperImagePage> createState() =>
-      FullwScreenWaStatellpaperPage();
+  State<FullScreenWallpaperPage> createState() =>
+      _FullScreenWallpaperPageState();
 }
 
-class FullwScreenWaStatellpaperPage
-    extends State<FullScreenWallpaperImagePage> {
+class _FullScreenWallpaperPageState extends State<FullScreenWallpaperPage> {
   late Stream<DateTime> _dateTimeStream;
   late StreamSubscription<DateTime> _dateTimeSubscription;
   DateTime _currentDateTime = DateTime.now();
@@ -27,7 +34,6 @@ class FullwScreenWaStatellpaperPage
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _currentDateTime = DateTime.now();
     _dateTimeStream = Stream<DateTime>.periodic(
@@ -43,7 +49,6 @@ class FullwScreenWaStatellpaperPage
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _dateTimeSubscription.cancel();
     super.dispose();
   }
@@ -54,32 +59,12 @@ class FullwScreenWaStatellpaperPage
         body: Stack(
       children: [
         InkWell(
-          onTap: () {
-            setState(() {
-              _isShowAppBar = !_isShowAppBar;
-            });
-          },
-          child: widget.image != null
-              ? Image(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  image: widget.image!,
-                  fit: BoxFit.fitHeight,
-                )
-              : CachedNetworkImage(
-                  imageUrl: widget.url,
-                  imageBuilder: (context, imageProvider) {
-                    return Image(
-                      image: imageProvider,
-                      fit: BoxFit.fitHeight,
-                    );
-                  },
-                  placeholder: (context, url) =>
-                      const Center(child: CircularProgressIndicator()),
-                  errorWidget: (context, url, error) =>
-                      const Center(child: Icon(Icons.error)),
-                ),
-        ),
+            onTap: () {
+              setState(() {
+                _isShowAppBar = !_isShowAppBar;
+              });
+            },
+            child: showWallpaper()),
         AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           height:
@@ -119,5 +104,38 @@ class FullwScreenWaStatellpaperPage
         )
       ],
     ));
+  }
+
+  Widget showWallpaper() {
+    if (widget.image != null) {
+      return widget.image != null
+          ? Image(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              image: widget.image!,
+              fit: BoxFit.fitHeight,
+            )
+          : CachedNetworkImage(
+              imageUrl: widget.url,
+              imageBuilder: (context, imageProvider) {
+                return Image(
+                  image: imageProvider,
+                  fit: BoxFit.fitHeight,
+                );
+              },
+              placeholder: (context, url) =>
+                  const Center(child: CircularProgressIndicator()),
+              errorWidget: (context, url, error) =>
+                  const Center(child: Icon(Icons.error)),
+            );
+    } else {
+      return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: VideoNetworkCustom.fromController(
+          controller: widget.videoPlayerController!,
+        ),
+      );
+    }
   }
 }

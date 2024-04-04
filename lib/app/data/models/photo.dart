@@ -5,6 +5,7 @@ class Photo extends PhotoEntity {
     super.id,
     super.width,
     super.height,
+    super.url,
     super.src,
   });
   factory Photo.fromEntity(PhotoEntity entity) {
@@ -12,6 +13,7 @@ class Photo extends PhotoEntity {
       id: entity.id,
       width: entity.width,
       height: entity.height,
+      url: entity.url,
       src: entity.src,
     );
   }
@@ -21,6 +23,7 @@ class Photo extends PhotoEntity {
       id: json['id'],
       width: json['width'],
       height: json['height'],
+      url: json['url'],
       src: json['src']['original'],
     );
   }
@@ -46,6 +49,7 @@ class Photo extends PhotoEntity {
     data['id'] = id;
     data['width'] = width;
     data['height'] = height;
+    data['url'] = url;
     data['src'] = src;
     return data;
   }

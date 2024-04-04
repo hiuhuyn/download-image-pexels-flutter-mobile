@@ -5,6 +5,7 @@ class Video extends VideoEntity {
       {super.id,
       super.width,
       super.height,
+      super.url,
       super.image,
       super.duration,
       super.videoFiles});
@@ -14,6 +15,7 @@ class Video extends VideoEntity {
       id: entity.id,
       width: entity.width,
       height: entity.height,
+      url: entity.url,
       image: entity.image,
       duration: entity.duration,
       videoFiles: entity.videoFiles,
@@ -25,7 +27,7 @@ class Video extends VideoEntity {
       id: json['id'],
       width: json['width'],
       height: json['height'],
-
+      url: json['url'],
       image: json['image'],
       duration: json['duration'],
       // ignore: prefer_null_aware_operators
@@ -42,7 +44,7 @@ class Video extends VideoEntity {
     data['id'] = id;
     data['width'] = width;
     data['height'] = height;
-
+    data['url'] = url;
     data['image'] = image;
     data['duration'] = duration;
 

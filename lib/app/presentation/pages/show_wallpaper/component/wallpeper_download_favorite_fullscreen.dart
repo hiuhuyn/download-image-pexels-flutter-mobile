@@ -2,9 +2,11 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 import 'package:wallpaper_app/app/domain/entity/media.dart';
 import 'package:wallpaper_app/app/domain/entity/photo_entity.dart';
 import 'package:wallpaper_app/app/domain/entity/video_entity.dart';
+import 'package:wallpaper_app/app/presentation/widgets/download_media.dart';
 import 'package:wallpaper_app/app/presentation/widgets/video_network_custom.dart';
 import 'package:wallpaper_app/core/enum/type_file.dart';
 import 'package:wallpaper_app/core/routers/routes_name.dart';
@@ -23,6 +25,7 @@ class _WallpaperDownloadFavoriteFullScreenState
     with AutomaticKeepAliveClientMixin {
   bool isFavorite = false;
   ImageProvider<Object>? imageSuccess;
+  VideoPlayerController? videoPlayerController;
   bool isShowDownload = true;
   @override
   Widget build(BuildContext context) {
@@ -69,7 +72,7 @@ class _WallpaperDownloadFavoriteFullScreenState
                           bottomRight: Radius.circular(20))),
                   alignment: Alignment.center,
                   child: Text(
-                    isShowDownload ? "Download" : "Apply",
+                    isShowDownload ? "Download" : "Open",
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -117,7 +120,12 @@ class _WallpaperDownloadFavoriteFullScreenState
         ),
         child: ClipRRect(
             borderRadius: BorderRadius.circular(20),
-            child: VideoNetworkCustom(video: video)));
+            child: VideoNetworkCustom.fromVideo(
+              video: video,
+              controllerBuild: (value) {
+                videoPlayerController = value;
+              },
+            )));
   }
 
   void _onFavorite() {
@@ -134,20 +142,34 @@ class _WallpaperDownloadFavoriteFullScreenState
         "imageProvider": imageSuccess,
         "url": photo.src
       });
+    } else if (videoPlayerController != null && widget.media is VideoEntity) {
+      final video = widget.media as VideoEntity;
+      Navigator.pushNamed(context, RoutesName.kFullScreenWallpaper, arguments: {
+        "type": TypeFile.video,
+        "videoPlayerController": videoPlayerController,
+        "url": video.videoFiles!.first.link
+      });
     }
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 
-  void _onTapDownload() {
+  void _onTapDownload() async {
     if (isShowDownload) {
-      setState(() {
-        isShowDownload = false;
-      });
-    } else {
-      print('Apply wallpeper');
-    }
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => DownloadMeidaWidget(
+          media: widget.media,
+          onSuccess: (value) {
+            setState(() {
+              isShowDownload = value;
+            });
+            Navigator.of(context).pop();
+          },
+        ),
+      );
+    } else {}
   }
 }

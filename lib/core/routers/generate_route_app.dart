@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 import 'package:wallpaper_app/app/data/models/collection.dart';
 import 'package:wallpaper_app/app/domain/entity/media.dart';
 import 'package:wallpaper_app/app/presentation/pages/home/home_page.dart';
@@ -39,15 +41,27 @@ class GenerateRouteApp {
               ImageProvider? imageProvider = arguments['imageProvider'];
               String url = arguments['url'];
               return MaterialPageRoute(
-                  builder: (context) => FullScreenWallpaperImagePage(
+                  builder: (context) => FullScreenWallpaperPage.fromImage(
                         url: url,
                         image: imageProvider,
                       ),
                   settings: settings);
+            } else if (arguments['type'] == TypeFile.video) {
+              VideoPlayerController videoPlayerController =
+                  arguments['videoPlayerController'];
+              String url = arguments['url'];
+              return MaterialPageRoute(
+                builder: (context) => FullScreenWallpaperPage.fromVideo(
+                  url: url,
+                  videoPlayerController: videoPlayerController,
+                ),
+              );
             }
           }
         } catch (e) {
-          print("Lỗi format: $e");
+          if (kDebugMode) {
+            print("Lỗi format: $e");
+          }
         }
         return MaterialPageRoute(
             builder: (context) => const PageNotFound(), settings: settings);
