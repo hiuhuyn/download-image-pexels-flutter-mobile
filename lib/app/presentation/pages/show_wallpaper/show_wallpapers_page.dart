@@ -16,7 +16,10 @@ class _ShowWallpaperPageState extends State<ShowWallpaperPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+      ),
       body: Column(
         children: [
           const Spacer(),

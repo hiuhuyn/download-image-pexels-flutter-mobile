@@ -41,7 +41,9 @@ class _ListWallpaperByCollectionPageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text(
           widget.collection.title ?? "",
           maxLines: 1,

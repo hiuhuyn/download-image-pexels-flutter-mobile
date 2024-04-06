@@ -26,6 +26,7 @@ class _SearchInputPageState extends State<SearchInputPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

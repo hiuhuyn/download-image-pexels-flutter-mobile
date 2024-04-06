@@ -56,54 +56,56 @@ class _FullScreenWallpaperPageState extends State<FullScreenWallpaperPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         body: Stack(
-      children: [
-        InkWell(
-            onTap: () {
-              setState(() {
-                _isShowAppBar = !_isShowAppBar;
-              });
-            },
-            child: showWallpaper()),
-        AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          height:
-              _isShowAppBar ? (MediaQuery.of(context).size.height * 0.1) : 0,
-          child: AppBar(
-            backgroundColor: Colors.transparent.withOpacity(0.3),
-            elevation: 1,
-            foregroundColor: Colors.white,
-          ),
-        ),
-        SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Spacer(),
-              Text(
-                "${_currentDateTime.hour}:${_currentDateTime.minute}",
-                style: const TextStyle(
-                    fontSize: 100,
-                    color: Colors.white,
-                    fontWeight: FontWeight.normal),
+          children: [
+            InkWell(
+                onTap: () {
+                  setState(() {
+                    _isShowAppBar = !_isShowAppBar;
+                  });
+                },
+                child: showWallpaper()),
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              height: _isShowAppBar
+                  ? (MediaQuery.of(context).size.height * 0.1)
+                  : 0,
+              child: AppBar(
+                backgroundColor: Colors.transparent.withOpacity(0.3),
+                elevation: 1,
+                foregroundColor: Colors.white,
               ),
-              Text(
-                "${_currentDateTime.day}/${_currentDateTime.month}/${_currentDateTime.year}",
-                style: const TextStyle(
-                    fontSize: 25,
-                    color: Colors.white,
-                    fontWeight: FontWeight.normal),
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Spacer(),
+                  Text(
+                    "${_currentDateTime.hour}:${_currentDateTime.minute}",
+                    style: const TextStyle(
+                        fontSize: 100,
+                        color: Colors.white,
+                        fontWeight: FontWeight.normal),
+                  ),
+                  Text(
+                    "${_currentDateTime.day}/${_currentDateTime.month}/${_currentDateTime.year}",
+                    style: const TextStyle(
+                        fontSize: 25,
+                        color: Colors.white,
+                        fontWeight: FontWeight.normal),
+                  ),
+                  const Spacer(
+                    flex: 4,
+                  ),
+                ],
               ),
-              const Spacer(
-                flex: 4,
-              ),
-            ],
-          ),
-        )
-      ],
-    ));
+            )
+          ],
+        ));
   }
 
   Widget showWallpaper() {

@@ -34,7 +34,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: const Text('Wallpaper App'),
       ),
       body: BlocBuilder<HomeBloc, HomeState>(
@@ -53,6 +55,7 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: ElevatedButton.icon(
         style: const ButtonStyle(
+          backgroundColor: MaterialStatePropertyAll(Colors.white),
           foregroundColor: MaterialStatePropertyAll(Colors.black),
         ),
         onPressed: () {
